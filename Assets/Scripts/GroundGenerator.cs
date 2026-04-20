@@ -16,7 +16,7 @@ public class GroundGenerator : MonoBehaviour
     [SerializeField] private float _noiseStep = 0.5f; // Step size for the Perlin noise, which controls the frequency of the terrain features
     [SerializeField] private float _bottom = 10f; // Y-coordinate for the bottom of the ground, which determines how low the terrain can go
 
-    private Vector3 _lasPos;
+    private Vector3 _lastPos;
 
     public void OnValidate()
     {
@@ -25,15 +25,16 @@ public class GroundGenerator : MonoBehaviour
         for(int i = 0; i < _levelLength; i++)
         {
             _lastPos = transform.position + new Vector3(i * _xMultiplier, Mathf.PerlinNoise(0, i * _noiseStep) * _yMultiplier);// Calculate the position of the next point using Perlin noise for a natural terrain effect
-            spriteShapeController.spline.InsertPointAt(i, _lastPos); // Insert the new point into the spline at the calculated position
+            _spriteShapeController.spline.InsertPointAt(i, _lastPos); // Insert the new point into the spline at the calculated position
 
             if(i != 0 && 1 != _levelLength - 1)
             {
                 _spriteShapeController.spline.SetTangentMode(i, ShapeTangentMode.Continuous); // Set the tangent mode to continuous for smooth curves between points
-                _spriteShapeController.spline.SetLeftTangen(i, Vector3.left *_xMultiplier * _curveSmoothness); // Set the left tangent to create a smooth curve based on the x multiplier and curve smoothness
-                _spriteShapeController.spline.SetRightTangen(i, Vector3.right *_xMultiplier * _curveSmoothness); // Set the right tangent to create a smooth curve based on the x multiplier and curve smoothness
+                _spriteShapeController.spline.SetLeftTangent(i, Vector3.left *_xMultiplier * _curveSmoothness); // Set the left tangent to create a smooth curve based on the x multiplier and curve smoothness
+                _spriteShapeController.spline.SetRightTangent(i, Vector3.right *_xMultiplier * _curveSmoothness); // Set the right tangent to create a smooth curve based on the x multiplier and curve smoothness
             }
         }
-        _spriteShapeController.spline.InsertPointAt()
+        _spriteShapeController.spline.InsertPointAt(_levelLength, new Vector3(_lastPos.x, transform.position.y - _bottom));// Insert a point at the end of the spline to create a flat bottom for the ground
+        _spriteShapeController.spline.InsertPointAt(_levelLength + 1, new Vector3(transform.position.x, transform.position.y - _bottom)); // Insert a point at the beginning of the spline to create a flat bottom for the ground
     }
 }

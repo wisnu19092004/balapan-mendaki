@@ -10,9 +10,16 @@ public class Drive : MonoBehaviour
     [SerializeField] private Rigidbody2D _motorRb; // SerializeField allows you to set the value of this private variable in the Unity Editor
     [SerializeField] private float _speed = 150f; // SerializeField allows you to set the value of this private variable in the Unity Editor
     [SerializeField] private float _rotationSpeed = 360f; // SerializeField allows you to set the value of this private variable in the Unity Editor
+    [SerializeField] private Vector2 _centerOfMass;
 
     private float _moveInput; // This variable will store the input from the player
-    
+
+    private void Start()
+    {
+        // Mengubah titik berat motor sesuai nilai yang kita atur di Inspector
+        _motorRb.centerOfMass = _centerOfMass;
+    }
+
     private void Update()
     {
         _moveInput = 0f;
