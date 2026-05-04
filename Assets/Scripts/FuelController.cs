@@ -22,22 +22,33 @@ public class FuelController : MonoBehaviour
         }
     }
 
-    void Start()
+    private void Start()
     {
         _currentFuelAmount = _maxFuelAmount; // Initialize fuel to maximum at the start
         UpdateUI(); // Update the UI to reflect the initial fuel amount
     }
 
     
-    void Update()
+    private void Update()
     {
         _currentFuelAmount -= Time.deltaTime * _fuelDrainSpeed; // Decrease fuel based on time and drain speed
         UpdateUI(); // Update the UI to reflect the current fuel amount
+
+        if(_currentFuelAmount <= 0f)
+        {
+            GameManager.instance.GameOver();
+        }
     }
 
     private void UpdateUI()
     {
         _fuelImage.fillAmount = (_currentFuelAmount / _maxFuelAmount); // Update the fuel bar fill amount based on the current fuel percentage
         _fuelImage.color = _fuelGradient.Evaluate(_fuelImage.fillAmount); // Update the fuel bar color based on the current fuel percentage using the gradient
+    }
+
+    public void FillFuel()
+    {
+        _currentFuelAmount = _maxFuelAmount; // Refill fuel to maximum
+        UpdateUI(); // Update the UI to reflect the refilled fuel amount
     }
 }

@@ -351,7 +351,7 @@ Transform:
   m_GameObject: {fileID: 504770144}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.17, y: 1.38, z: 0}
+  m_LocalPosition: {x: -3.165, y: 1.4434, z: 0}
   m_LocalScale: {x: 0.109525904, y: 0.1095259, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3710,8 +3710,8 @@ Transform:
   m_GameObject: {fileID: 1231389673}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.51, y: 1.45, z: 0}
-  m_LocalScale: {x: 0.1095259, y: 0.1095259, z: 1}
+  m_LocalPosition: {x: 1.506, y: 1.508, z: 0}
+  m_LocalScale: {x: 0.1024981, y: 0.1024981, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1262966092}
@@ -3921,7 +3921,7 @@ WheelJoint2D:
   m_BreakTorque: Infinity
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: -3.170001, y: 1.3800005}
+  m_Anchor: {x: -3.1050012, y: 1.5080007}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_Suspension:
     m_DampingRatio: 0.35
@@ -3946,7 +3946,7 @@ WheelJoint2D:
   m_BreakTorque: Infinity
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 1.5099996, y: 1.4499999}
+  m_Anchor: {x: 1.5059999, y: 1.5079995}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_Suspension:
     m_DampingRatio: 0.35
@@ -3971,7 +3971,7 @@ MonoBehaviour:
   _banDepanRB: {fileID: 1231389677}
   _banBelakangRB: {fileID: 504770147}
   _motorRb: {fileID: 1262966093}
-  _speed: 600
+  _speed: 300
   _rotationSpeed: 360
   _centerOfMass: {x: 0, y: 0}
 --- !u!1 &1296092866
@@ -4681,7 +4681,7 @@ GameObject:
   - component: {fileID: 2062677288}
   m_Layer: 0
   m_Name: Body Motor
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5244,63 +5244,6 @@ PolygonCollider2D:
       - {x: -2.6736333, y: -3.3922756}
       - {x: -2.7365522, y: -3.3930292}
   m_UseDelaunayMesh: 1
---- !u!1001 &5854180534051078259
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1358550245724720368, guid: 3933cbb603b7cdb4fb42e564ee607e32, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 16.259747
-      objectReference: {fileID: 0}
-    - target: {fileID: 1358550245724720368, guid: 3933cbb603b7cdb4fb42e564ee607e32, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -7.098583
-      objectReference: {fileID: 0}
-    - target: {fileID: 1358550245724720368, guid: 3933cbb603b7cdb4fb42e564ee607e32, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1358550245724720368, guid: 3933cbb603b7cdb4fb42e564ee607e32, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1358550245724720368, guid: 3933cbb603b7cdb4fb42e564ee607e32, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1358550245724720368, guid: 3933cbb603b7cdb4fb42e564ee607e32, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1358550245724720368, guid: 3933cbb603b7cdb4fb42e564ee607e32, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1358550245724720368, guid: 3933cbb603b7cdb4fb42e564ee607e32, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1358550245724720368, guid: 3933cbb603b7cdb4fb42e564ee607e32, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1358550245724720368, guid: 3933cbb603b7cdb4fb42e564ee607e32, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2203348758766625133, guid: 3933cbb603b7cdb4fb42e564ee607e32, type: 3}
-      propertyPath: m_Name
-      value: Jirigen_0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 3933cbb603b7cdb4fb42e564ee607e32, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -5313,4 +5256,3 @@ SceneRoots:
   - {fileID: 1901371124}
   - {fileID: 863240560}
   - {fileID: 860374230}
-  - {fileID: 5854180534051078259}
