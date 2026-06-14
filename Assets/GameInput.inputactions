@@ -18,15 +18,37 @@
             ],
             "bindings": [
                 {
-                    "name": "",
-                    "id": "7d3454f3-a6af-4f33-97c1-c0bfb9531fa8",
-                    "path": "",
+                    "name": "1D Axis",
+                    "id": "d8c900b5-dc54-4f09-9030-a50a92bc571f",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "7d2408e2-3525-4f04-97d3-d651cd25a2b9",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "New action",
                     "isComposite": false,
-                    "isPartOfComposite": false
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "d70f98b2-b4c8-46c2-b46f-98847dbd79d1",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }
