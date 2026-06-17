@@ -6,19 +6,20 @@ TagManager:
   tags:
   - Ground
   - Fuel
+  - NPC
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - Speedometer
   - Fuel
   - Fuel Bar
-  - 
-  - 
-  - 
+  - Player
+  - NPC
+  - Jarum Speedometer
   - 
   - 
   - 
