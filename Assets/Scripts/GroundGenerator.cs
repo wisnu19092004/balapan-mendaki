@@ -9,7 +9,7 @@ public class GroundGenerator : MonoBehaviour
 {
     [SerializeField] private SpriteShapeController _spriteShapeController;
 
-    [SerializeField, Range(3f, 1000f)] private int _levelLength = 50; // Length of the ground in units
+    [SerializeField, Range(3f, 200f)] private int _levelLength = 50; // Length of the ground in units
     [SerializeField, Range(1f, 50f)] private float _xMultiplier = 2f; // Multiplier for the x-axis to stretch the ground
     [SerializeField, Range(1f, 50f)] private float _yMultiplier = 2f; // Multiplier for the y-axis to stretch the ground
     [SerializeField, Range(0f, 1f)] private float _curveSmoothness = 0.5f; // Smoothness of the curve, where 0 is a straight line and 1 is a very smooth curve
