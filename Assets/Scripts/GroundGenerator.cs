@@ -8,7 +8,7 @@ public class GroundGenerator : MonoBehaviour
     [SerializeField] private SpriteShapeController _spriteShapeController;
 
     [Header("Pengaturan Dimensi")]
-    [SerializeField, Range(3f, 500f)] private int _levelLength = 100; 
+    [SerializeField, Range(3f, 100f)] private int _levelLength = 100; 
     [SerializeField, Range(1f, 50f)] private float _xMultiplier = 2f; 
     [SerializeField, Range(1f, 50f)] private float _yMultiplier = 5f; 
     
