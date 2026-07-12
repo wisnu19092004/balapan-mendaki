@@ -1,86 +1,126 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.InputSystem; // Memastikan pustaka Input System modern aktif
 
 public class Drive : MonoBehaviour
 {
     [Header("Setup Komponen Rigidbody")]
-    [SerializeField] private Rigidbody2D _banDepanRB;    // Roda depan tetap dipasang untuk rotasi di udara dan menggelinding
-    [SerializeField] private Rigidbody2D _banBelakangRB; // Menjadi satu-satunya roda penggerak (RWD)
+    [SerializeField] private Rigidbody2D _banDepanRB;
+    [SerializeField] private Rigidbody2D _banBelakangRB;
     [SerializeField] private Rigidbody2D _motorRb; 
 
-    [Header("Pengaturan Performa")]
-    [SerializeField] private float _speed = 1000f; 
-    [SerializeField] private float _brakeSpeed = 400f; // Kekuatan rem saat menekan tombol mundur
-    [SerializeField] public float _maxSpeed = 50f;    // Batasan kecepatan maksimal kendaraan
-    [SerializeField] private float _rotationSpeed = 500f; 
+    [Header("Pengaturan Performa Standar")]
+    [SerializeField] public float _speed = 1000f; 
+    [SerializeField] private float _brakeSpeed = 800f; 
+    [SerializeField] public float _maxSpeed = 35f;    
     [SerializeField] private Vector2 _centerOfMass;
 
+    [Header("Sistem Gesek Rem Baru (Unity 6 Drag)")]
+    [SerializeField] private float _gayaGesekRemMaksimal = 4f; 
+    private float _dragNormalBodi; 
+
+    [Header("Pengaturan Fitur Boost Nitro")]
+    [SerializeField] private float _multiplierBoostSpeed = 1.8f; 
+    [SerializeField] private float _multiplierMaxSpeed = 1.5f;   
+    [SerializeField] private float _durasiBoost = 2f;            
+
     private float _moveInput; 
+    private float _currentSpeedAktif;
+    private float _currentMaxSpeedAktif;
+    private bool _sedangBoost = false;
 
     private void Start()
     {
-        // Mengubah titik berat motor sesuai nilai yang kita atur di Inspector
         _motorRb.centerOfMass = _centerOfMass;
+        
+        _currentSpeedAktif = _speed;
+        _currentMaxSpeedAktif = _maxSpeed;
+
+        if (_motorRb != null)
+        {
+            _dragNormalBodi = _motorRb.linearDamping;
+        }
     }
 
     private void Update()
     {
         _moveInput = 0f;
 
-        // Membaca input langsung dari keyboard menggunakan New Input System
-        if (Keyboard.current != null)
+        // PERBAIKAN UNITY 6: Menggunakan format pengecekan Input System yang lebih aman dan modern
+        Keyboard keyboardAktif = Keyboard.current;
+        if (keyboardAktif != null)
         {
-            if (Keyboard.current.wKey.isPressed || Keyboard.current.upArrowKey.isPressed)
+            if (keyboardAktif.wKey.isPressed || keyboardAktif.upArrowKey.isPressed)
             {
-                _moveInput = 1f; // Bergerak maju
+                _moveInput = 1f;
             }
-            else if (Keyboard.current.sKey.isPressed || Keyboard.current.downArrowKey.isPressed)
+            else if (keyboardAktif.sKey.isPressed || keyboardAktif.downArrowKey.isPressed)
             {
-                _moveInput = -1f; // Bergerak mundur / Mengerem
+                _moveInput = -1f;
             }
         }
     }
 
     private void FixedUpdate()
     {
-        // Mengambil kecepatan laju horizontal motor saat ini
         float currentHorizontalSpeed = _motorRb.linearVelocity.x;
 
-        // --- SISTEM PEMBATAS KECEPATAN (MAX SPEED) ---
-        if (_moveInput > 0f && currentHorizontalSpeed >= _maxSpeed)
+        // --- SISTEM PEMBATAS KECEPATAN ---
+        if (_moveInput > 0f && currentHorizontalSpeed >= _currentMaxSpeedAktif)
         {
             _moveInput = 0f; 
         }
 
-        // --- SISTEM PENGEREMAN DAN AKSELERASI ---
         float gayaTorsiRoda = 0f;
 
+        // --- LOGIKA GAYA GESEK DAN TORSI REM ---
         if (_moveInput > 0f)
         {
-            // Akselerasi maju normal
-            gayaTorsiRoda = -_moveInput * _speed * Time.fixedDeltaTime;
+            _motorRb.linearDamping = _dragNormalBodi;
+            gayaTorsiRoda = -_moveInput * _currentSpeedAktif * Time.fixedDeltaTime;
         }
         else if (_moveInput < 0f)
         {
-            // Jika motor sedang melaju ke depan lalu menekan S/Mundur, terapkan kekuatan rem kuat
             if (currentHorizontalSpeed > 0.5f)
             {
+                _motorRb.linearDamping = _gayaGesekRemMaksimal;
                 gayaTorsiRoda = -_moveInput * _brakeSpeed * Time.fixedDeltaTime;
             }
             else
             {
-                // Jika motor sudah berhenti atau mau mundur, gunakan kecepatan mundur normal
-                gayaTorsiRoda = -_moveInput * _speed * Time.fixedDeltaTime;
+                _motorRb.linearDamping = _dragNormalBodi;
+                gayaTorsiRoda = -_moveInput * _currentSpeedAktif * Time.fixedDeltaTime;
             }
         }
+        else
+        {
+            _motorRb.linearDamping = _dragNormalBodi;
+        }
 
-        // --- EKSEKUSI FISIKA TORQUE (PENGGERAK RODA BELAKANG) ---
-        // PERBAIKAN: _banDepanRB.AddTorque dihapus agar tidak ikut berputar sendiri saat digas
+        // Eksekusi Fisika RWD
         _banBelakangRB.AddTorque(gayaTorsiRoda); 
+    }
 
-        // Torsi rotasi bodi di udara tetap aktif menggunakan kedua input agar pemain bisa menyeimbangkan motor
-        _motorRb.AddTorque(_moveInput * _rotationSpeed * Time.fixedDeltaTime); 
+    public void AktifkanBoost()
+    {
+        if (_sedangBoost)
+        {
+            StopAllCoroutines();
+        }
+        StartCoroutine(ProsesBoostCoroutine());
+    }
+
+    private IEnumerator ProsesBoostCoroutine()
+    {
+        _sedangBoost = true;
+        _currentSpeedAktif = _speed * _multiplierBoostSpeed;
+        _currentMaxSpeedAktif = _maxSpeed * _multiplierMaxSpeed;
+        
+        yield return new WaitForSeconds(_durasiBoost);
+
+        _currentSpeedAktif = _speed;
+        _currentMaxSpeedAktif = _maxSpeed;
+        _sedangBoost = false;
     }
 }
