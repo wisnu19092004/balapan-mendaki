@@ -4,16 +4,16 @@ using UnityEngine.SceneManagement;
 public class MainMenuController : MonoBehaviour
 {
     [Header("Pengaturan Panel UI")]
-    [SerializeField] private GameObject _panelPengaturanUI; // Tarik panel pengaturanmu ke sini jika ada
+    [SerializeField] private GameObject _panelPengaturanUI; // Tarik Panel Pengaturan ke sini di Inspector
 
     private const string LEVEL_TERAKHIR_KEY = "LevelTerakhirDisimpan";
 
     private void Start()
     {
-        // Pastikan game berjalan dengan waktu normal saat kembali ke main menu
+        // Pastikan waktu game berjalan normal (1f) saat kembali ke Main Menu
         Time.timeScale = 1f;
 
-        // Tutup panel pengaturan di awal game agar rapi
+        // Tutup panel pengaturan di awal game
         if (_panelPengaturanUI != null)
         {
             _panelPengaturanUI.SetActive(false);
@@ -23,20 +23,27 @@ public class MainMenuController : MonoBehaviour
     // --- FUNGSI UNTUK TOMBOL: MULAI PETUALANGAN ---
     public void MulaiPetualangan()
     {
-        // Membaca level terakhir yang disimpan di memori. 
-        // Jika pemain baru pertama kali main, standarnya akan memuat index scene ke-1 (Level 1).
+        // Membaca level terakhir dari PlayerPrefs (Default: 1 jika baru pertama main)
         int indexLevelTujuan = PlayerPrefs.GetInt(LEVEL_TERAKHIR_KEY, 1);
 
-        Debug.Log("Memuat kemajuan petualangan! Membuka Scene Index: " + indexLevelTujuan);
+        Debug.Log("Memuat gameplay! Buka Scene Index: " + indexLevelTujuan);
+        
+        // Pindah langsung ke scene gameplay
         SceneManager.LoadScene(indexLevelTujuan);
     }
 
-    // --- FUNGSI UNTUK TOMBOL: PENGATURAN ---
+    public void BukaLevelPage()
+    {
+        // Ganti "LevelPage" dengan nama exact dari Scene halaman level kamu
+        SceneManager.LoadScene("Level"); 
+    }
+
+    // --- FUNGSI UNTUK TOMBOL: PENGATURAN (TOGGLE BUKA/TUTUP) ---
     public void BukaPengaturan()
     {
         if (_panelPengaturanUI != null)
         {
-            // Jika panel sedang aktif maka ditutup, jika sedang tertutup maka dibuka
+            // Buka jika tertutup, tutup jika terbuka
             _panelPengaturanUI.SetActive(!_panelPengaturanUI.activeSelf);
         }
         else
@@ -45,20 +52,39 @@ public class MainMenuController : MonoBehaviour
         }
     }
 
-    // --- FUNGSI TAMBAHAN: CARA MENYIMPAN PROGRESS (PENTING) ---
-    // Panggil fungsi ini dari skrip FinishLine.cs kamu saat Player menang di level tertentu!
+    // --- FUNGSI KHUSUS TOMBOL SILANG (X) PADA PANEL PENGATURAN ---
+    public void TutupPengaturan()
+    {
+        if (_panelPengaturanUI != null)
+        {
+            _panelPengaturanUI.SetActive(false);
+        }
+    }
+
+    public void KeluarGame()
+    {
+        Debug.Log("Game ditutup!");
+
+        // Menutup aplikasi saat game sudah di-build (EXE / APK / Android / Windows)
+        Application.Quit();
+
+        // Menghentikan mode Play jika sedang diuji coba langsung di dalam Unity Editor
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #endif
+    }
+
+    // --- FUNGSI MENYIMPAN PROGRESS (Dipanggil saat menang di FinishLine.cs) ---
     public static void SimpanProgressLevel(int indexLevelSekarang)
     {
-        // Simpan index scene berikutnya agar saat klik Mulai langsung lanjut
         int levelBerikutnya = indexLevelSekarang + 1;
-        
-        // Hanya simpan jika level berikutnya lebih tinggi dari rekor sebelumnya
         int rekorLama = PlayerPrefs.GetInt(LEVEL_TERAKHIR_KEY, 1);
+
         if (levelBerikutnya > rekorLama)
         {
             PlayerPrefs.SetInt(LEVEL_TERAKHIR_KEY, levelBerikutnya);
-            PlayerPrefs.Save(); // Tulis data secara permanen ke hardisk
-            Debug.Log("Progress petualangan disimpan! Level selanjutnya: " + levelBerikutnya);
+            PlayerPrefs.Save();
+            Debug.Log("Progress disimpan! Level selanjutnya: " + levelBerikutnya);
         }
     }
 }
