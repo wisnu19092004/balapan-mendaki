@@ -34,15 +34,15 @@ public class CountdownManager : MonoBehaviour
     {
         // --- HITUNGAN 3 ---
         TampilkanAset(_sprite3, _soundBeepDetik);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.1f);
 
         // --- HITUNGAN 2 ---
         TampilkanAset(_sprite2, _soundBeepDetik);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.1f);
 
         // --- HITUNGAN 1 ---
         TampilkanAset(_sprite1, _soundBeepDetik);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.1f);
 
         // --- GO! ---
         TampilkanAset(_spriteGo, _soundGo);

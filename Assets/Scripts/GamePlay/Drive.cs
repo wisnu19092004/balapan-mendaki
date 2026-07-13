@@ -13,7 +13,7 @@ public class Drive : MonoBehaviour
     [Header("Pengaturan Performa Standar")]
     [SerializeField] public float _speed = 1000f; 
     [SerializeField] private float _brakeSpeed = 800f; 
-    [SerializeField] public float _maxSpeed = 35f;    
+    [SerializeField] public float _maxSpeed = 35f;     
     [SerializeField] private Vector2 _centerOfMass;
 
     [Header("Sistem Gesek Rem Baru (Unity 6 Drag)")]
@@ -30,6 +30,9 @@ public class Drive : MonoBehaviour
     private float _currentMaxSpeedAktif;
     private bool _sedangBoost = false;
 
+    // --- TAMBAHAN UNTUK INTEGRASI FINISH LINE ---
+    private bool _sudahFinish = false;
+
     private void Start()
     {
         _motorRb.centerOfMass = _centerOfMass;
@@ -45,9 +48,12 @@ public class Drive : MonoBehaviour
 
     private void Update()
     {
+        // Jika sudah finish, jangan baca input keyboard pemain lagi
+        if (_sudahFinish) return;
+
         _moveInput = 0f;
 
-        // PERBAIKAN UNITY 6: Menggunakan format pengecekan Input System yang lebih aman dan modern
+        // Menggunakan format pengecekan Input System modern
         Keyboard keyboardAktif = Keyboard.current;
         if (keyboardAktif != null)
         {
@@ -64,6 +70,13 @@ public class Drive : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // JIKA SUDAH FINISH: Eksekusi Rem Otomatis
+        if (_sudahFinish)
+        {
+            AutoBrakeAtFinish();
+            return;
+        }
+
         float currentHorizontalSpeed = _motorRb.linearVelocity.x;
 
         // --- SISTEM PEMBATAS KECEPATAN ---
@@ -100,6 +113,26 @@ public class Drive : MonoBehaviour
 
         // Eksekusi Fisika RWD
         _banBelakangRB.AddTorque(gayaTorsiRoda); 
+    }
+
+    // --- FUNGSI KHUSUS UNTUK DIPANGGIL DARI FINISHLINE.CS ---
+    public void MatikanKontrolDanRem()
+    {
+        _sudahFinish = true;
+        _moveInput = 0f;
+    }
+
+    private void AutoBrakeAtFinish()
+    {
+        if (_motorRb != null)
+        {
+            // Berikan gaya gesek maksimal pada bodi motor agar melambat secara halus & alami
+            _motorRb.linearDamping = _gayaGesekRemMaksimal;
+        }
+
+        // Hentikan putaran roda secara bertahap
+        _banBelakangRB.angularVelocity = Mathf.Lerp(_banBelakangRB.angularVelocity, 0f, Time.fixedDeltaTime * 3f);
+        _banDepanRB.angularVelocity = Mathf.Lerp(_banDepanRB.angularVelocity, 0f, Time.fixedDeltaTime * 3f);
     }
 
     public void AktifkanBoost()

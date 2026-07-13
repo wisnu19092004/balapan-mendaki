@@ -5,24 +5,30 @@ using UnityEngine;
 public class NPCFuzzyController : MonoBehaviour
 {
     [Header("Setup Komponen Rigidbody NPC")]
-    [SerializeField] private Rigidbody2D _banDepanRB;    // Roda depan bebas (tidak diberi torsi penggerak di tanah)
-    [SerializeField] private Rigidbody2D _banBelakangRB; // Satu-satunya roda penggerak utama (RWD)
+    [SerializeField] private Rigidbody2D _banDepanRB;    // Roda depan bebas
+    [SerializeField] private Rigidbody2D _banBelakangRB; // Roda penggerak utama (RWD)
     [SerializeField] private Rigidbody2D _motorRb;
-    [SerializeField] private Transform _playerTransform; // Tarik objek bodi Player asli ke sini di Inspector
+    [SerializeField] private Transform _playerTransform; 
     
     [Header("Spesifikasi Performa (Samakan dengan Player)")]
-    [SerializeField] private float _speed = 1000f;        // Naikan agar seimbang dengan keganasan Player baru
-    [SerializeField] private float _maxSpeed = 35f;       // BARU: Batasan kecepatan maksimal kendaraan NPC
-    [SerializeField] private float _rotationSpeed = 400f; // Kecepatan rotasi udara penyeimbang
+    [SerializeField] private float _speed = 1000f;        
+    [SerializeField] private float _maxSpeed = 35f;       
+    [SerializeField] private float _rotationSpeed = 400f; 
     [SerializeField] private Vector2 _centerOfMass;
+
+    [Header("Sistem Gesek Rem (Sesuai Player)")]
+    [SerializeField] private float _gayaGesekRemMaksimal = 4f;
 
     [Header("Sensor Pemantau Jalan")]
     [SerializeField] private Transform _sensorPosisiDepan;
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private float _jarakCekSensor = 6f;
 
-    private float _moveInputAI; // Pengganti input keyboard virtual untuk AI (-1f hingga 1f)
+    private float _moveInputAI; 
     private float _seed;
+
+    // --- TAMBAHAN UNTUK INTEGRASI FINISH LINE ---
+    private bool _sudahFinish = false;
 
     void Start()
     {
@@ -41,6 +47,9 @@ public class NPCFuzzyController : MonoBehaviour
 
     private void Update()
     {
+        // Jika sudah finish, hentikan evaluasi keputusan Fuzzy AI
+        if (_sudahFinish) return;
+
         // 1. Ambil data kondisi nyata (Crisp Inputs)
         float sudutKemiringan = AmbilSudutKemiringan();
         float jarakKeTanah = CekKondisiTanahDiDepan();
@@ -51,11 +60,17 @@ public class NPCFuzzyController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // JIKA SUDAH FINISH: Eksekusi Rem Otomatis untuk NPC
+        if (_sudahFinish)
+        {
+            AutoBrakeAtFinish();
+            return;
+        }
+
         // Mengambil kecepatan laju horizontal (maju) NPC saat ini
         float currentHorizontalSpeed = _motorRb.linearVelocity.x;
 
-        // --- BARU: SISTEM PEMBATAS KECEPATAN (MAX SPEED) NPC ---
-        // Jika AI berniat ngegas maju tetapi kecepatannya sudah menyentuh/melebihi batas, kunci gasnya ke 0
+        // --- SISTEM PEMBATAS KECEPATAN (MAX SPEED) NPC ---
         if (_moveInputAI > 0f && currentHorizontalSpeed >= _maxSpeed)
         {
             _moveInputAI = 0f;
@@ -64,12 +79,38 @@ public class NPCFuzzyController : MonoBehaviour
         // Hitung gaya torsi roda berdasarkan keputusan Fuzzy
         float gayaTorsiRoda = -_moveInputAI * _speed * Time.fixedDeltaTime;
 
-        // --- EKSEKUSI FISIKA (ADIL & RELEVAN DENGAN PLAYER) ---
-        // PERBAIKAN: Hanya roda belakang (_banBelakangRB) yang diberi torsi penggerak di tanah (RWD)
+        // --- EKSEKUSI FISIKA ---
         _banBelakangRB.AddTorque(gayaTorsiRoda);
 
-        // Torsi rotasi bodi di udara tetap menggunakan kedua roda/bodi agar stabil saat melompat
+        // Torsi rotasi bodi di udara
         _motorRb.AddTorque(_moveInputAI * _rotationSpeed * Time.fixedDeltaTime);
+    }
+
+    // --- FUNGSI KHUSUS UNTUK DIPANGGIL DARI FINISHLINE.CS ---
+    public void MatikanKontrolDanRem()
+    {
+        _sudahFinish = true;
+        _moveInputAI = 0f;
+        this.enabled = false; // Matikan skrip AI agar tidak memproses keputusan lagi
+    }
+
+    private void AutoBrakeAtFinish()
+    {
+        if (_motorRb != null)
+        {
+            // Terapkan gaya gesek pengereman bodi pada NPC
+            _motorRb.linearDamping = _gayaGesekRemMaksimal;
+        }
+
+        // Melambatkan putaran kedua roda NPC secara perlahan
+        if (_banBelakangRB != null)
+        {
+            _banBelakangRB.angularVelocity = Mathf.Lerp(_banBelakangRB.angularVelocity, 0f, Time.fixedDeltaTime * 3f);
+        }
+        if (_banDepanRB != null)
+        {
+            _banDepanRB.angularVelocity = Mathf.Lerp(_banDepanRB.angularVelocity, 0f, Time.fixedDeltaTime * 3f);
+        }
     }
 
     // --- SUB-RUTIN LOGIKA FUZZY ---
@@ -105,7 +146,6 @@ public class NPCFuzzyController : MonoBehaviour
         float faktorAgresif = 1.0f;
         if (_playerTransform != null && transform.position.x < _playerTransform.position.x)
         {
-            // Jika tertinggal di belakang Player, AI mengamuk menggunakan multiplier 1.3f (130%)
             faktorAgresif = 1.3f; 
         }
 

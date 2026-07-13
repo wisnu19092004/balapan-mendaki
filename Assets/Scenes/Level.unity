@@ -1145,6 +1145,7 @@ GameObject:
   - component: {fileID: 454540410}
   - component: {fileID: 454540409}
   - component: {fileID: 454540408}
+  - component: {fileID: 454540411}
   m_Layer: 5
   m_Name: Level 3
   m_TagString: Untagged
@@ -1262,6 +1263,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 454540406}
   m_CullTransparentMesh: 1
+--- !u!114 &454540411
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 454540406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 251bf877da48c4245a41b5f18faa45d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelButtonDisplay
+  _targetLevelIndex: 3
+  _bintangImages: []
+  _spriteBintangKuning: {fileID: 5370903358492347892, guid: 7a315b65b6cb4e44b8f0eb0854b99134, type: 3}
+  _spriteBintangAbu: {fileID: -7457721979611879461, guid: 7bf37b6b5344f9c4890a20270905066d, type: 3}
 --- !u!1 &674406085
 GameObject:
   m_ObjectHideFlags: 0
@@ -1923,6 +1940,7 @@ GameObject:
   - component: {fileID: 1663177810}
   - component: {fileID: 1663177809}
   - component: {fileID: 1663177808}
+  - component: {fileID: 1663177811}
   m_Layer: 5
   m_Name: Level 1
   m_TagString: Untagged
@@ -2040,6 +2058,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1663177805}
   m_CullTransparentMesh: 1
+--- !u!114 &1663177811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663177805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 251bf877da48c4245a41b5f18faa45d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelButtonDisplay
+  _targetLevelIndex: 1
+  _bintangImages: []
+  _spriteBintangKuning: {fileID: 5370903358492347892, guid: 7a315b65b6cb4e44b8f0eb0854b99134, type: 3}
+  _spriteBintangAbu: {fileID: -7457721979611879461, guid: 7bf37b6b5344f9c4890a20270905066d, type: 3}
 --- !u!1 &1714892694
 GameObject:
   m_ObjectHideFlags: 0
@@ -2233,6 +2267,7 @@ GameObject:
   - component: {fileID: 2131952051}
   - component: {fileID: 2131952050}
   - component: {fileID: 2131952049}
+  - component: {fileID: 2131952052}
   m_Layer: 5
   m_Name: Level 2
   m_TagString: Untagged
@@ -2350,6 +2385,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2131952047}
   m_CullTransparentMesh: 1
+--- !u!114 &2131952052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2131952047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 251bf877da48c4245a41b5f18faa45d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelButtonDisplay
+  _targetLevelIndex: 2
+  _bintangImages: []
+  _spriteBintangKuning: {fileID: 5370903358492347892, guid: 7a315b65b6cb4e44b8f0eb0854b99134, type: 3}
+  _spriteBintangAbu: {fileID: -7457721979611879461, guid: 7bf37b6b5344f9c4890a20270905066d, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

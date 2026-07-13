@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7a315b65b6cb4e44b8f0eb0854b99134
+guid: 4500f1b2f06c6f74fa5751078e4a738f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5370903358492347892
-    second: Bintang Nyala_0
+      213: 3269320059498711679
+    second: Tombol Kosongan_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -152,13 +152,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Bintang Nyala_0
+      name: Tombol Kosongan_0
       rect:
         serializedVersion: 2
-        x: 19
-        y: 49
-        width: 63
-        height: 114
+        x: 91
+        y: 34
+        width: 264
+        height: 146
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -167,8 +167,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4fd83e5f528498a40800000000000000
-      internalID: 5370903358492347892
+      spriteID: f7aca73c545fe5d20800000000000000
+      internalID: 3269320059498711679
       vertices: []
       indices: 
       edges: []
@@ -187,7 +187,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Bintang Nyala_0: 5370903358492347892
+      Tombol Kosongan_0: 3269320059498711679
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

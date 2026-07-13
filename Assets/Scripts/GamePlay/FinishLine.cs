@@ -1,26 +1,61 @@
+using System.Collections;
 using UnityEngine;
 
 public class FinishLine : MonoBehaviour
 {
-    private bool _sudahAdaPemenang = false;
+    private bool _npcSudahFinish = false;
+    private bool _playerSudahFinish = false;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (_sudahAdaPemenang) return;
+        // 1. JIKA NPC MENYENTUH GARIS FINISH DULUAN
+        if (other.gameObject.layer == LayerMask.NameToLayer("NPC"))
+        {
+            if (!_npcSudahFinish)
+            {
+                _npcSudahFinish = true;
+                Debug.Log("NPC berhasil Finish duluan!");
 
-        // Cek apakah yang menyentuh garis finish adalah Player
-        if (other.CompareTag("Player"))
-        {
-            _sudahAdaPemenang = true;
-            Debug.Log("PLAYER MENANG!");
-            FindObjectOfType<GameManagerVisual>().TampilkanLayarSelesai("PLAYER MENANG!");
+                // Rem NPC secara otomatis
+                MonoBehaviour npcDrive = other.GetComponentInParent<MonoBehaviour>();
+                if (npcDrive != null) npcDrive.SendMessage("MatikanKontrolDanRem", SendMessageOptions.DontRequireReceiver);
+            }
         }
-        // Cek apakah yang menyentuh garis finish adalah NPC
-        else if (other.gameObject.layer == LayerMask.NameToLayer("NPC"))
+        // 2. JIKA PLAYER MENYENTUH GARIS FINISH
+        else if (other.CompareTag("Player"))
         {
-            _sudahAdaPemenang = true;
-            Debug.Log("NPC GHOST MENANG!");
-            FindObjectOfType<GameManagerVisual>().TampilkanLayarSelesai("NPC GHOST MENANG!");
+            if (!_playerSudahFinish)
+            {
+                _playerSudahFinish = true;
+                Debug.Log("Player berhasil Finish!");
+
+                // Rem Player secara otomatis & matikan input tombolnya
+                Drive playerDrive = other.GetComponentInParent<Drive>();
+                if (playerDrive != null) playerDrive.MatikanKontrolDanRem();
+
+                // Cek apakah Player Menang atau Kalah
+                bool playerMenang = !_npcSudahFinish; // Menang jika NPC BELUM finish duluan
+
+                // Jalankan jeda sedikit agar efek rem terasa alami sebelum Pop-Up muncul
+                StartCoroutine(ProsesSelesaiBalapan(playerMenang));
+            }
+        }
+    }
+
+    private IEnumerator ProsesSelesaiBalapan(bool playerMenang)
+    {
+        // Tunggu 1.5 detik agar pemain melihat kendaraannya mengerem anggun di balik garis finish
+        yield return new WaitForSeconds(1.5f);
+
+        if (playerMenang)
+        {
+            Debug.Log("TAMPILKAN POP-UP MENANG");
+            if (LevelFinishManager.Instance != null) LevelFinishManager.Instance.PlayerMenang();
+        }
+        else
+        {
+            Debug.Log("TAMPILKAN POP-UP KALAH");
+            if (LevelFinishManager.Instance != null) LevelFinishManager.Instance.PlayerKalah();
         }
     }
 }

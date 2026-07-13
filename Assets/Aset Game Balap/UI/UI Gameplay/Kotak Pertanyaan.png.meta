@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7a315b65b6cb4e44b8f0eb0854b99134
+guid: 46f4724558342684f89efcf60fcb8c18
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5370903358492347892
-    second: Bintang Nyala_0
+      213: -8933136364496410905
+    second: Kotak Pertanyaan_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,7 +72,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 512
+    maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -152,13 +152,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Bintang Nyala_0
+      name: Kotak Pertanyaan_0
       rect:
         serializedVersion: 2
-        x: 19
-        y: 49
-        width: 63
-        height: 114
+        x: 81
+        y: 17
+        width: 609
+        height: 713
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -167,8 +167,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4fd83e5f528498a40800000000000000
-      internalID: 5370903358492347892
+      spriteID: 7e621186ecf170480800000000000000
+      internalID: -8933136364496410905
       vertices: []
       indices: 
       edges: []
@@ -187,7 +187,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Bintang Nyala_0: 5370903358492347892
+      Kotak Pertanyaan_0: -8933136364496410905
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
